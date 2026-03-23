@@ -60,7 +60,6 @@ import com.lexovisaurus.archery.ui.theme.ArcheryTheme
 
 var score = Score()
 var scoreArray = Array(6) { 0 }
-var scoreTarget = 300
 // At the top level of your kotlin file:
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -88,6 +87,7 @@ fun Greeting(modifier: Modifier = Modifier) {
     val name = remember { mutableStateOf("Android") }
     val statArray = remember { mutableIntListOf(1,1,1,1,1,1,1) }
     var numberOfArrows = remember { mutableIntStateOf(3) }
+    var scoreTarget = remember { mutableIntStateOf(300) }
     Column {
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
@@ -113,6 +113,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                             FloatingActionButton(onClick = {openAddDialog.value = true}, Modifier.padding(16.dp)) { Icon(painterResource(R.drawable.ic_add), contentDescription = null) }
                             SmallFloatingActionButton(onClick = {
                                 statArray[6] += score.getTotal()
+                                score.addCombinedTotal(score.getTotal())
                                 score.setTotal(0)
                                 currentMatch.value = false
                             }, Modifier.padding(16.dp)) { Icon(painterResource(R.drawable.ic_stop), contentDescription = null) }
@@ -122,7 +123,7 @@ fun Greeting(modifier: Modifier = Modifier) {
                 else {
                     Column {
                         Text(stringResource(R.string.no_current_training_message), Modifier.padding(16.dp), textAlign = TextAlign.Center)
-                        FloatingActionButton(onClick = {openAlertDialog.value = true}, Modifier.align(Alignment.CenterHorizontally)) { Text("New match", Modifier.padding(16.dp)) }
+                        FloatingActionButton(onClick = {openAlertDialog.value = true}, Modifier.align(Alignment.CenterHorizontally)) { Text(stringResource(R.string.New_training_button), Modifier.padding(16.dp)) }
                     }
                 }
             }
@@ -133,7 +134,6 @@ fun Greeting(modifier: Modifier = Modifier) {
                 }, onConfirmation = {
                     openAlertDialog.value = false
                     currentMatch.value = true
-                    score.setTotal(0)
                 })
             }
 
@@ -167,9 +167,9 @@ fun Greeting(modifier: Modifier = Modifier) {
                             }
                         }
                     }*/
-                    var currentProgress by remember { mutableFloatStateOf((score.getTotal()/scoreTarget).toFloat()) }
+                    var currentProgress by remember { mutableFloatStateOf((score.getCombinedTotal()/scoreTarget.intValue).toFloat()) }
                     LinearProgressIndicator(progress = {currentProgress}, modifier = Modifier.fillMaxWidth().padding(8.dp))
-                    Text(stringResource(R.string.stats_shooted, 55.toString(), 55.toString(), 55.toString()), Modifier.align(Alignment.CenterHorizontally).padding(8.dp))
+                    Text(text = stringResource(R.string.stats_shooted, score.getCombinedTotal().toString()), Modifier.align(Alignment.CenterHorizontally).padding(8.dp))
                 }
 
             }
@@ -307,7 +307,7 @@ fun AddDialog(
 class Score() {
     //We're assuming that the "score" is the score for the 3 or 6 arrows.
     private var score = 0
-
+    private var CombinedTotals = 0
     private var total = 0
     fun getScore(): Int {
         return score
@@ -317,10 +317,26 @@ class Score() {
     }
     fun setScore(newScore: Int) {
         score = newScore
-        setTotal(score)
+        addTotal(score)
     }
-    fun setTotal(newTotal: Int) {
+    fun addTotal(newTotal: Int) {
         total += newTotal
+    }
+
+    fun setTotal(newTotal: Int) {
+        total = newTotal
+    }
+
+    fun addCombinedTotal(newTotal: Int) {
+        CombinedTotals += newTotal
+    }
+
+    fun setCombinedTotal(newTotal: Int) {
+        CombinedTotals = newTotal
+    }
+
+    fun getCombinedTotal(): Int {
+        return CombinedTotals
     }
     /*suspend fun incrementCounter() {
         context.dataStore.updateData {
