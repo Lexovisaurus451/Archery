@@ -5,4 +5,6 @@
     <string name="hello">Bonjour %1$s !</string>
     <string name="no_current_training_message">Aucun entrainement n\'a été démarré. Souhaiteriez vous en commencer un ?</string>
     <string name="stats">Mes statistiques</string>
+    <string name="stats_shooted">Vous avez tiré %1$s flèches sur 300.</string>
+    <string name="New_training_button">Nouvel Entrainement</string>
 </resources>

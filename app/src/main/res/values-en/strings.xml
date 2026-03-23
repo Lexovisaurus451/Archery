@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Archery</string>
-    <string name="current_training">current training</string>
+    <string name="current_training">Current training</string>
     <string name="hello">Hello %1$s !</string>
     <string name="no_current_training_message">No training was started. Do you want to start a training ?</string>
     <string name="stats">My stats</string>
+    <string name="stats_shooted">You\'ve shooted %1$s arrows out of 300.</string>
+    <string name="New_training_button">New training</string>
 </resources>
