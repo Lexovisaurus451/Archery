@@ -6,4 +6,9 @@
     <string name="stats">My stats</string>
     <string name="stats_shooted">You\'ve shooted %1$s arrows out of 300.</string>
     <string name="New_training_button">New training</string>
+    <string name="title_activity_settings" translatable="false">SettingsActivity</string>
+    <string name="about_message">This is an open source app. You can contribute if you want !</string>
+    <string name="settings_card_title">Settings</string>
+    <string name="wip">Work in progress</string>
+    <string name="about_card_title">About</string>
 </resources>

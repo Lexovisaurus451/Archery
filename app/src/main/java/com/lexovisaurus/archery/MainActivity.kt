@@ -1,11 +1,13 @@
 package com.lexovisaurus.archery
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Layout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.collection.mutableIntListOf
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -52,15 +54,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat.startActivity
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.glance.action.actionStartActivity
 import com.lexovisaurus.archery.ui.theme.ArcheryTheme
+import androidx.compose.ui.platform.LocalContext
 
 var score = Score()
 var scoreArray = Array(6) { 0 }
-// At the top level of your kotlin file:
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 
@@ -88,11 +92,12 @@ fun Greeting(modifier: Modifier = Modifier) {
     val statArray = remember { mutableIntListOf(1,1,1,1,1,1,1) }
     var numberOfArrows = remember { mutableIntStateOf(3) }
     var scoreTarget = remember { mutableIntStateOf(300) }
+    val context = LocalContext.current
     Column {
         Spacer(Modifier.height(16.dp))
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
             Text(stringResource(R.string.hello, name.value, "!"), Modifier.padding(24.dp))
-            TextButton(onClick = {}, enabled = false) { Icon(painterResource(R.drawable.ic_settings), contentDescription = null) }
+            TextButton(onClick = { context.startActivity(Intent(context, SettingsActivity::class.java)) }) { Icon(painterResource(R.drawable.ic_settings), contentDescription = null) }
         }
         Column {
             val openAlertDialog = remember { mutableStateOf(false) }
